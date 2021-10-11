@@ -1,5 +1,5 @@
-function checkStringLength (string, length) {
-  return string.length <= length;
+function isLongComment(comment, maxLength) {
+  return comment.length <= maxLength;
 }
 
-checkStringLength();
+export { isLongComment };
