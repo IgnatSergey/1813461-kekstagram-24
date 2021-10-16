@@ -1,3 +1,1 @@
-import { createArrayDescriptionPhoto } from './get-data.js';
-
-createArrayDescriptionPhoto();
+import './get-miniatures.js';
