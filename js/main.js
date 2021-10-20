@@ -1,1 +1,2 @@
-import './get-miniatures.js';
+import { addPhotoMiniatures } from './get-miniatures.js';
+addPhotoMiniatures();

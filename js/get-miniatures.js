@@ -15,5 +15,6 @@ similarPhotos.forEach(({ url, likes, comments }) => {
   listPhotoFragment.appendChild(photoElement);
 });
 
-containerPhotoMiniature.appendChild(listPhotoFragment);
+const addPhotoMiniatures = () => containerPhotoMiniature.appendChild(listPhotoFragment);
+export { addPhotoMiniatures };
 
