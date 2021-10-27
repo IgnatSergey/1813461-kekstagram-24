@@ -769,7 +769,7 @@ main {
           transform: translateX(-50%);
 }
 
-.big-picture__img img {
+.big-picture__img-container img {
   display: block;
 }
 
