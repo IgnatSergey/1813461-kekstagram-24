@@ -6,21 +6,19 @@ const bigPictureCommentItem = bigPictureCommentsContainer.querySelector('.social
 const listCommentsFragment = document.createDocumentFragment();
 
 function getBigPictureData(currentMiniatureEvent) {
-  similarPhotos.forEach(({ id, url, description, likes, comments }) => {
-    if (String(id) === currentMiniatureEvent.dataset.id) {
-      bigPictureModal.querySelector('.big-picture__img').src = url;
-      bigPictureModal.querySelector('.social__caption').textContent = description;
-      bigPictureModal.querySelector('.likes-count').textContent = likes;
-      bigPictureModal.querySelector('.comments-count').textContent = comments.length;
+  const currentElement = similarPhotos.find( (item) => String(item.id) === currentMiniatureEvent.dataset.id);
 
-      comments.forEach(({ avatar, message, name }) => {
-        const commentElement = bigPictureCommentItem.cloneNode(true);
-        commentElement.querySelector('.social__picture').src = avatar;
-        commentElement.querySelector('.social__picture').alt = name;
-        commentElement.querySelector('.social__text').textContent = message;
-        listCommentsFragment.appendChild(commentElement);
-      });
-    }
+  bigPictureModal.querySelector('.big-picture__img').src = currentElement.url;
+  bigPictureModal.querySelector('.social__caption').textContent = currentElement.description;
+  bigPictureModal.querySelector('.likes-count').textContent = currentElement.likes;
+  bigPictureModal.querySelector('.comments-count').textContent = currentElement.comments.length;
+
+  currentElement.comments.forEach(({ avatar, message, name }) => {
+    const commentElement = bigPictureCommentItem.cloneNode(true);
+    commentElement.querySelector('.social__picture').src = avatar;
+    commentElement.querySelector('.social__picture').alt = name;
+    commentElement.querySelector('.social__text').textContent = message;
+    listCommentsFragment.appendChild(commentElement);
   });
 
   bigPictureCommentsContainer.innerHTML = '';
