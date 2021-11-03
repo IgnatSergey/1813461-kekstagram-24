@@ -2,7 +2,7 @@ import { isLongComment } from './utils/check-string-length.js';
 
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
-const MAX_LENGTH_COMMENT = 10;
+const MAX_LENGTH_COMMENT = 140;
 
 function isElementRepeat(element, array) {
   if (array.length > 1 && array.indexOf(element, array.indexOf(element) + 1) > 0) {
@@ -23,7 +23,7 @@ hashtagsInput.addEventListener('input', () => {
     } else if (element.length === 1) {
       hashtagsInput.setCustomValidity('Хештег не может состоять только из одной решётки');
     } else if (!(/^\w+$/.test(element.slice(1))) || (element.includes('_')) || (element.indexOf('#') > 1)) {
-      hashtagsInput.setCustomValidity(`Хэштег "${element} "должен содержать только числа и буквы`);
+      hashtagsInput.setCustomValidity(`Хэштег ${element} должен содержать только числа и буквы`);
     } else if (element.length > 20) {
       hashtagsInput.setCustomValidity('Максимальная длина хэштега 20 символов');
     } else if (isElementRepeat(element, hashtagsArray)) {

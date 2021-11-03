@@ -4,8 +4,7 @@ import { isEscapeKey } from './utils/check-keydown.js';
 
 const bigPictureModal = document.querySelector('.big-picture');
 const bigpictureModalClose = document.querySelector('.big-picture__cancel');
-const commentCount = bigPictureModal.querySelector('.social__comment-count');
-const commentsLoader = bigPictureModal.querySelector('.comments-loader');
+const commentsLoaderElement = bigPictureModal.querySelector('.comments-loader');
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -33,8 +32,7 @@ function closeBigPictureModal() {
 
 containerPhotoMiniature.addEventListener('click', (evt) => {
   if (evt.target.closest('.picture')) {
-    commentCount.classList.add('hidden');
-    commentsLoader.classList.add('hidden');
+    commentsLoaderElement.classList.remove('hidden');
 
     openBigPictureModal(evt);
   }
@@ -44,4 +42,4 @@ bigpictureModalClose.addEventListener('click', () => {
   closeBigPictureModal();
 });
 
-export { bigPictureModal };
+export { bigPictureModal, commentsLoaderElement };
