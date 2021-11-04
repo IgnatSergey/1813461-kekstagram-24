@@ -17,7 +17,7 @@ const DESCRIPTIONS = [
   'у зеркала',
 ];
 
-const COMMENTS_AMOUNT_LIMIT = 10;
+const COMMENTS_AMOUNT_LIMIT = 20;
 const LIKES_LIMIT_DOWN = 15;
 const LIKES_LIMIT_UP = 200;
 
