@@ -1,5 +1,5 @@
 import { isEscapeKey } from './utils/check-keydown.js';
-import { image, currentClassEffect } from './edit-picture.js';
+import { image, currentClassEffect, doScale, effectSlider } from './edit-picture.js';
 import { hashtagsInput, commentInput } from './data-validation.js';
 
 const loadFileInput = document.querySelector('.img-upload__input');
@@ -17,7 +17,10 @@ const onPopupEscKeydown = (evt) => {
 function openEditingModal() {
   editingModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  image.classList.add('effects__preview--none');
   effectNoneInput.checked = true;
+  effectSlider.classList.add('hidden');
+  doScale(100);
 
   document.addEventListener('keydown', onPopupEscKeydown);
 }
@@ -27,6 +30,8 @@ function closeEditingModal() {
   document.body.classList.remove('modal-open');
   loadFileInput.value = '';
   image.classList.remove(`effects__preview--${currentClassEffect}`);
+  image.style.transform = 'scale(1)';
+  image.style.filter = '';
 
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
