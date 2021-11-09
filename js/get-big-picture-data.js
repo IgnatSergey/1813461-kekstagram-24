@@ -1,5 +1,5 @@
 import { bigPictureModal, commentsLoaderElement } from './big-picture-modal.js';
-import { similarPhotos } from './get-miniatures.js';
+import { photosData } from './api.js';
 
 const bigPictureCommentsContainer = document.querySelector('.social__comments');
 const bigPictureCommentItem = bigPictureCommentsContainer.querySelector('.social__comment');
@@ -7,7 +7,7 @@ const listCommentsFragment = document.createDocumentFragment();
 const commentLoadCount = document.querySelector('.comments-load-count');
 
 function getBigPictureData(currentMiniatureEvent) {
-  const currentElement = similarPhotos.find((item) => String(item.id) === currentMiniatureEvent.dataset.id);
+  const currentElement = photosData.find((item) => String(item.id) === currentMiniatureEvent.dataset.id);
 
   bigPictureModal.querySelector('.big-picture__img').src = currentElement.url;
   bigPictureModal.querySelector('.social__caption').textContent = currentElement.description;
