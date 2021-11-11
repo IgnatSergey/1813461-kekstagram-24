@@ -54,5 +54,4 @@ function getBigPictureData(currentMiniatureEvent) {
   });
 }
 
-
 export { getBigPictureData };
