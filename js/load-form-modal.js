@@ -1,6 +1,6 @@
 import { isEscapeKey } from './utils/check-keydown.js';
-import { image, currentClassEffect, doScale, effectSlider } from './edit-picture.js';
-import { hashtagsInput, commentInput } from './data-validation.js';
+import { image, currentClassEffect, effectSlider, scaleControlData, scaleControlInput, onButtonPlusScale, onButtonMinesScale } from './edit-picture.js';
+import { hashtagsInput, commentInput, outlineDefaultStyle } from './data-validation.js';
 import { sendData } from './api.js';
 
 const loadFileInput = document.querySelector('.img-upload__input');
@@ -10,6 +10,17 @@ const effectNoneInput = document.querySelector('#effect-none');
 const photoForm = document.querySelector('.img-upload__form');
 const blockSendSuccess = document.querySelector('#success').content.querySelector('.success');
 const blockSendError = document.querySelector('#error').content.querySelector('.error');
+const preview = document.querySelector('.img-upload__preview img');
+const submitElement = document.querySelector('.img-upload__submit');
+const scaleControlSmaller = document.querySelector('.scale__control--smaller');
+const scaleControlBigger = document.querySelector('.scale__control--bigger');
+const successMessage = blockSendSuccess.cloneNode(true);
+const successMessageCloseElement = successMessage.querySelector('.success__button');
+const errorMessage = blockSendError.cloneNode(true);
+const errorMessageCloseElement = errorMessage.querySelector('.error__button');
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
+//Открытие окна загрузки фото
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt) && !(document.activeElement === hashtagsInput) && !(document.activeElement === commentInput)) {
@@ -18,41 +29,64 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
+const onPopupKlickClose = () => {
+  closeEditingModal();
+};
+
 function openEditingModal() {
   editingModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   image.classList.add('effects__preview--none');
   effectNoneInput.checked = true;
   effectSlider.classList.add('hidden');
-  doScale(100);
+  scaleControlData.value = 100;
+  scaleControlInput.value = '100%';
+  scaleControlSmaller.addEventListener('click', onButtonMinesScale);
+  scaleControlBigger.addEventListener('click', onButtonPlusScale);
+  hashtagsInput.style.outline = outlineDefaultStyle;
+  commentInput.style.outline = outlineDefaultStyle;
+  commentInput.style.border = 'none';
+  hashtagsInput.style.border = 'none';
+  hashtagsInput.setCustomValidity('');
+  commentInput.setCustomValidity('');
 
   document.addEventListener('keydown', onPopupEscKeydown);
+  editingModalCloseElement.addEventListener('click', onPopupKlickClose);
 }
 
 function closeEditingModal() {
   editingModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
   loadFileInput.value = '';
+  hashtagsInput.value = '';
+  commentInput.value = '';
   image.classList.remove(`effects__preview--${currentClassEffect}`);
   image.style.transform = 'scale(1)';
   image.style.filter = '';
+  scaleControlData.value = 100;
+  scaleControlSmaller.removeEventListener('click', onButtonMinesScale);
+  scaleControlBigger.removeEventListener('click', onButtonPlusScale);
 
   document.removeEventListener('keydown', onPopupEscKeydown);
+  editingModalCloseElement.removeEventListener('click', onPopupKlickClose);
 }
 
-loadFileInput.addEventListener('change', () => {
-  openEditingModal();
-});
+const setLoadFileChange = () => {
+  loadFileInput.addEventListener('change', () => {
+    const file = loadFileInput.files[0];
+    const fileName = file.name.toLowerCase();
+    const matches = FILE_TYPES.some((item) => fileName.endsWith(item));
+    if (matches) {
+      preview.src = URL.createObjectURL(file);
+    }
+    openEditingModal();
+  });
+};
 
-editingModalCloseElement.addEventListener('click', () => {
-  closeEditingModal();
-});
+//Модуль успешной загрузки фото
 
-
-const successMessage = blockSendSuccess.cloneNode(true);
 successMessage.classList.add('hidden');
 document.body.appendChild(successMessage);
-const successMessageCloseElement = successMessage.querySelector('.success__button');
 
 const onPopupSuccessEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -61,30 +95,35 @@ const onPopupSuccessEscKeydown = (evt) => {
   }
 };
 
+const onPopupSuccessKlickClose = () => {
+  closeSendDataSuccessMessage();
+};
+
+const onPopupSuccessKlickEmpty = (evt) => {
+  if (!(evt.target.closest('.success__inner'))) {
+    closeSendDataSuccessMessage();
+  }
+};
+
 function openSendDataSuccessMessage() {
   closeEditingModal();
   successMessage.classList.remove('hidden');
   document.addEventListener('keydown', onPopupSuccessEscKeydown);
-  document.addEventListener('click', (evt) => {
-    if (!(evt.target.closest('.success__inner'))) {
-      closeSendDataSuccessMessage();
-    }
-  });
+  successMessageCloseElement.addEventListener('click', onPopupSuccessKlickClose);
+  document.addEventListener('click', onPopupSuccessKlickEmpty);
 }
 
 function closeSendDataSuccessMessage() {
   successMessage.classList.add('hidden');
   document.removeEventListener('keydown', onPopupSuccessEscKeydown);
+  successMessageCloseElement.removeEventListener('click', onPopupSuccessKlickClose);
+  document.removeEventListener('click', onPopupSuccessKlickEmpty);
 }
 
-successMessageCloseElement.addEventListener('click', () => {
-  closeSendDataSuccessMessage();
-});
+//Модуль ошибки загрузки фото
 
-const errorMessage = blockSendError.cloneNode(true);
 errorMessage.classList.add('hidden');
 document.body.appendChild(errorMessage);
-const errorMessageCloseElement = errorMessage.querySelector('.error__button');
 
 const onPopupErrorEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -93,36 +132,53 @@ const onPopupErrorEscKeydown = (evt) => {
   }
 };
 
+const onPopupErrorKlickClose = () => {
+  closeSendDataErrorMessage();
+};
+
+const onPopupErrorKlickEmpty = (evt) => {
+  if (!(evt.target.closest('.error__inner'))) {
+    closeSendDataErrorMessage();
+  }
+};
+
 function openSendDataErrorMessage() {
   closeEditingModal();
   errorMessage.classList.remove('hidden');
   document.addEventListener('keydown', onPopupErrorEscKeydown);
-  document.addEventListener('click', (evt) => {
-    if (!(evt.target.closest('.error__inner'))) {
-      closeSendDataErrorMessage();
-    }
-  });
+  errorMessageCloseElement.addEventListener('click', onPopupErrorKlickClose);
+  document.addEventListener('click', onPopupErrorKlickEmpty);
 }
 
 function closeSendDataErrorMessage() {
   errorMessage.classList.add('hidden');
   document.removeEventListener('keydown', onPopupErrorEscKeydown);
+  errorMessageCloseElement.removeEventListener('click', onPopupErrorKlickClose);
+  document.removeEventListener('click', onPopupErrorKlickEmpty);
 }
 
-errorMessageCloseElement.addEventListener('click', () => {
-  closeSendDataErrorMessage();
-});
+const setUserFormSubmitElementClick = () => {
+  submitElement.addEventListener('click', () => {
+    if (!(hashtagsInput.checkValidity())) {
+      hashtagsInput.style.outline = 'none';
+      hashtagsInput.style.border = '2px solid red';
+    } else if (!(commentInput.checkValidity())) {
+      commentInput.style.outline = 'none';
+      commentInput.style.border = '2px solid red';
+    }
+  });
+};
 
-const setUserFormSubmit = (onSuccess, onFail) => {
+
+const setUserFormSubmit = () => {
   photoForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-
     sendData(
-      () => onSuccess(),
-      () => onFail(),
+      () => openSendDataSuccessMessage(),
+      () => openSendDataErrorMessage(),
       new FormData(evt.target),
     );
   });
 };
 
-setUserFormSubmit(openSendDataSuccessMessage, openSendDataErrorMessage);
+export { setLoadFileChange, setUserFormSubmit, setUserFormSubmitElementClick };

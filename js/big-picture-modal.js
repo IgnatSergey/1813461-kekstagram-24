@@ -3,7 +3,7 @@ import { getBigPictureData } from './get-big-picture-data.js';
 import { isEscapeKey } from './utils/check-keydown.js';
 
 const bigPictureModal = document.querySelector('.big-picture');
-const bigpictureModalClose = document.querySelector('.big-picture__cancel');
+const bigPictureModalClose = document.querySelector('.big-picture__cancel');
 const commentsLoaderElement = bigPictureModal.querySelector('.comments-loader');
 
 const onPopupEscKeydown = (evt) => {
@@ -13,14 +13,16 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
-function openBigPictureModal(evt) {
+const onPopupKlickClose = () => {
+  closeBigPictureModal();
+};
+
+function openBigPictureModal() {
   bigPictureModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  const currentMiniatureEvent = evt.target.closest('.picture');
-  getBigPictureData(currentMiniatureEvent);
-
   document.addEventListener('keydown', onPopupEscKeydown);
+  bigPictureModalClose.addEventListener('click', onPopupKlickClose);
 }
 
 function closeBigPictureModal() {
@@ -28,18 +30,19 @@ function closeBigPictureModal() {
   document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onPopupEscKeydown);
+  bigPictureModalClose.removeEventListener('click', onPopupKlickClose);
 }
 
-containerPhotoMiniature.addEventListener('click', (evt) => {
-  if (evt.target.closest('.picture')) {
-    commentsLoaderElement.classList.remove('hidden');
+const setMiniatureClick = (photosData) => {
+  containerPhotoMiniature.addEventListener('click', (evt) => {
+    if (evt.target.closest('.picture')) {
+      commentsLoaderElement.classList.remove('hidden');
+      const currentMiniatureEvent = evt.target.closest('.picture');
+      getBigPictureData(photosData, currentMiniatureEvent);
 
-    openBigPictureModal(evt);
-  }
-});
+      openBigPictureModal(evt);
+    }
+  });
+};
 
-bigpictureModalClose.addEventListener('click', () => {
-  closeBigPictureModal();
-});
-
-export { bigPictureModal, commentsLoaderElement };
+export { bigPictureModal, commentsLoaderElement, setMiniatureClick };

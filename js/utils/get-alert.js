@@ -17,20 +17,19 @@ const showAlert = (message) => {
   document.body.append(alertContainer);
 
   async function changeBackground() {
-    const i = true;
-    while (i) {
+    let i = 0;
+    while (i < ALERT_SHOW_TIME) {
       alertContainer.style.backgroundColor = 'red';
       await sleep(ALERT_BACKGROUND_CHANGE_TIME);
       alertContainer.style.backgroundColor = 'black';
       await sleep(ALERT_BACKGROUND_CHANGE_TIME);
+      i = i + ALERT_BACKGROUND_CHANGE_TIME * 2;
     }
   }
 
   changeBackground();
 
-  setTimeout(() => {
-    alertContainer.remove();
-  }, ALERT_SHOW_TIME);
+  setTimeout(() => { alertContainer.remove(); }, ALERT_SHOW_TIME);
 };
 
 export { showAlert };
