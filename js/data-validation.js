@@ -2,7 +2,7 @@ import { isLongComment } from './utils/check-string-length.js';
 
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
-const MAX_LENGTH_COMMENT = 4;
+const MAX_LENGTH_COMMENT = 140;
 const MAX_LENGTH_HASHTAG = 20;
 const MAX_HASHTAG_AMOUNT = 5;
 const outlineDefaultStyle = hashtagsInput.style.outline;
