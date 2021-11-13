@@ -1,19 +1,28 @@
 import { renderSimilarPhotos } from './get-miniatures.js';
-import './big-picture-modal.js';
-import './load-form-modal.js';
-import './edit-picture.js';
-import './data-validation.js';
-import '../nouislider/nouislider.js';
-import './slider.js';
+import { setMiniatureClick } from './big-picture-modal.js';
+import { setLoadFileChange, setUserFormSubmit, setUserFormSubmitElementClick } from './load-form-modal.js';
+import { editPhoto } from './edit-picture.js';
+import { validateHashtags, validateComments } from './data-validation.js';
 import { getData } from './api.js';
-import { setDefaultClick, setRandomClick, setPopularClick, compareLikes, renderRandomSimilarPhotos } from './get-miniatures.js';
+import { setFilterClick, compareComments, renderRandomSimilarPhotos, filterBlock } from './get-miniatures.js';
 import { debounce } from './utils/debounce.js';
 
+const filterDefaultElement = filterBlock.querySelector('#filter-default');
+const filterRandomElement = filterBlock.querySelector('#filter-random');
+const filterPopularElement = filterBlock.querySelector('#filter-discussed');
 const RERENDER_DELAY = 500;
 
 getData((photos) => {
   renderSimilarPhotos(photos);
-  setDefaultClick(debounce(() => renderSimilarPhotos(photos), RERENDER_DELAY));
-  setRandomClick(debounce(() => renderRandomSimilarPhotos(photos), RERENDER_DELAY));
-  setPopularClick(debounce(() => renderSimilarPhotos(photos, compareLikes), RERENDER_DELAY));
+  setFilterClick(filterDefaultElement, debounce(() => renderSimilarPhotos(photos), RERENDER_DELAY));
+  setFilterClick(filterRandomElement, debounce(() => renderRandomSimilarPhotos(photos), RERENDER_DELAY));
+  setFilterClick(filterPopularElement, debounce(() => renderSimilarPhotos(photos, compareComments), RERENDER_DELAY));
+  setMiniatureClick(photos);
 });
+
+setLoadFileChange();
+setUserFormSubmit();
+setUserFormSubmitElementClick();
+editPhoto();
+validateHashtags();
+validateComments();

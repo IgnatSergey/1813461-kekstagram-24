@@ -1,3 +1,4 @@
+import '../nouislider/nouislider.js';
 import { image } from './edit-picture.js';
 
 const sliderElement = document.querySelector('.effect-level__slider');

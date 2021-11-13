@@ -1,25 +1,27 @@
 import { showAlert } from './utils/get-alert.js';
 
-let photosData;
+const SERVER_ADDRESS_FOR_GET = 'https://24.javascript.pages.academy/kekstagram/data';
+const SERVER_ADDRESS_FOR_SEND = 'https://24.javascript.pages.academy/kekstagram';
+const ALERT_GET_DATA_TEXT = 'Сервер не доступен!';
+const ALERT_SEND_DATA_TEXT = 'Не удалось отправить форму. Попробуйте ещё раз';
 
 const getData = (onSuccess) => {
-  fetch('https://24.javascript.pages.academy/kekstagram/data')
+  fetch(SERVER_ADDRESS_FOR_GET)
     .then((response) => {
       if (response.ok) {
         return response;
       }
-      showAlert('Сервер не доступен!');
+      showAlert(ALERT_GET_DATA_TEXT);
     })
     .then((response) => response.json())
     .then((photos) => {
-      photosData = photos.slice();
       onSuccess(photos);
     });
 };
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://24.javascript.pages.academy/kekstagram',
+    SERVER_ADDRESS_FOR_SEND,
     {
       method: 'POST',
       body,
@@ -29,12 +31,12 @@ const sendData = (onSuccess, onFail, body) => {
       if (response.ok) {
         onSuccess();
       } else {
-        onFail('Не удалось отправить форму. Попробуйте ещё раз');
+        onFail(ALERT_SEND_DATA_TEXT);
       }
     })
     .catch(() => {
-      onFail('Не удалось отправить форму. Попробуйте ещё раз');
+      onFail(ALERT_SEND_DATA_TEXT);
     });
 };
 
-export { getData, sendData, photosData };
+export { getData, sendData };

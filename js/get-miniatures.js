@@ -5,6 +5,13 @@ const similarPhotoTemplate = document.querySelector('#picture').content.querySel
 const filterBlock = document.querySelector('.img-filters');
 const PHOTO_RANDOM_AMOUNT = 10;
 
+const compareComments = (photoA, photoB) => {
+  const commentsAmountA = photoA.comments.length;
+  const commentsAmountB = photoB.comments.length;
+
+  return commentsAmountB - commentsAmountA;
+};
+
 const renderSimilarPhotos = (similarPhotos, compareFunction) => {
   const listPhotoFragment = document.createDocumentFragment();
   const allPhotos = document.querySelectorAll('.picture');
@@ -47,39 +54,12 @@ const renderRandomSimilarPhotos = (similarPhotos) => {
   containerPhotoMiniature.appendChild(listPhotoFragment);
 };
 
-const filterDefaultElement = filterBlock.querySelector('#filter-default');
-const filterRandomElement = filterBlock.querySelector('#filter-random');
-const filterPopularElement = filterBlock.querySelector('#filter-discussed');
-
-const setDefaultClick = (cb) => {
-  filterDefaultElement.addEventListener('click', () => {
+const setFilterClick = (filterElement, cb) => {
+  filterElement.addEventListener('click', () => {
     filterBlock.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-    filterDefaultElement.classList.add('img-filters__button--active');
+    filterElement.classList.add('img-filters__button--active');
     cb();
   });
 };
 
-const setRandomClick = (cb) => {
-  filterRandomElement.addEventListener('click', () => {
-    filterBlock.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-    filterRandomElement.classList.add('img-filters__button--active');
-    cb();
-  });
-};
-
-const setPopularClick = (cb) => {
-  filterPopularElement.addEventListener('click', () => {
-    filterBlock.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-    filterPopularElement.classList.add('img-filters__button--active');
-    cb();
-  });
-};
-
-const compareLikes = (photoA, photoB) => {
-  const commentsAmountA = photoA.comments.length;
-  const commentsAmountB = photoB.comments.length;
-
-  return commentsAmountB - commentsAmountA;
-};
-
-export { containerPhotoMiniature, renderSimilarPhotos, setDefaultClick, setRandomClick, setPopularClick, compareLikes, renderRandomSimilarPhotos };
+export { containerPhotoMiniature, filterBlock, renderSimilarPhotos, setFilterClick, compareComments, renderRandomSimilarPhotos };
