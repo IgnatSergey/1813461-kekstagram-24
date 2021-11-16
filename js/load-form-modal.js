@@ -1,5 +1,5 @@
 import { isEscapeKey } from './utils/check-keydown.js';
-import { image, currentClassEffect, effectSlider, scaleControlData, scaleControlInput, onButtonPlusScale, onButtonMinesScale } from './edit-picture.js';
+import { image, effectSlider, scaleControlData, scaleControlInput, onButtonPlusScale, onButtonMinesScale } from './edit-picture.js';
 import { hashtagsInput, commentInput, outlineDefaultStyle } from './data-validation.js';
 import { sendData } from './api.js';
 
@@ -36,7 +36,6 @@ const onPopupKlickClose = () => {
 function openEditingModal() {
   editingModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  image.classList.add('effects__preview--none');
   effectNoneInput.checked = true;
   effectSlider.classList.add('hidden');
   scaleControlData.value = 100;
@@ -55,12 +54,15 @@ function openEditingModal() {
 }
 
 function closeEditingModal() {
+  const photoClassName = image.className;
   editingModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
   loadFileInput.value = '';
   hashtagsInput.value = '';
   commentInput.value = '';
-  image.classList.remove(`effects__preview--${currentClassEffect}`);
+  if (photoClassName) {
+    image.classList.remove(photoClassName);
+  }
   image.style.transform = 'scale(1)';
   image.style.filter = '';
   scaleControlData.value = 100;
@@ -168,7 +170,6 @@ const setUserFormSubmitElementClick = () => {
     }
   });
 };
-
 
 const setUserFormSubmit = () => {
   photoForm.addEventListener('submit', (evt) => {

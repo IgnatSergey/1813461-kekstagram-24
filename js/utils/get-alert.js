@@ -1,9 +1,7 @@
 const ALERT_SHOW_TIME = 5000;
 const ALERT_BACKGROUND_CHANGE_TIME = 300;
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -16,7 +14,7 @@ const showAlert = (message) => {
   alertContainer.textContent = message;
   document.body.append(alertContainer);
 
-  async function changeBackground() {
+  const changeBackground = async () => {
     let i = 0;
     while (i < ALERT_SHOW_TIME) {
       alertContainer.style.backgroundColor = 'red';
@@ -25,7 +23,7 @@ const showAlert = (message) => {
       await sleep(ALERT_BACKGROUND_CHANGE_TIME);
       i = i + ALERT_BACKGROUND_CHANGE_TIME * 2;
     }
-  }
+  };
 
   changeBackground();
 

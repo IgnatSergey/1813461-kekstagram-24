@@ -1,5 +1,3 @@
-function isLongComment(comment, maxLength) {
-  return comment.length > maxLength;
-}
+const isLongComment = (comment, maxLength) => comment.length > maxLength;
 
 export { isLongComment };

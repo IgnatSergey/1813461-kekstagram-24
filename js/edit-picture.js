@@ -59,5 +59,5 @@ const editPhoto = () => {
   });
 };
 
-export { image, currentClassEffect, effectSlider, scaleControlData, scaleControlInput, onButtonPlusScale, onButtonMinesScale, editPhoto };
+export { image, effectSlider, scaleControlData, scaleControlInput, onButtonPlusScale, onButtonMinesScale, editPhoto };
 
