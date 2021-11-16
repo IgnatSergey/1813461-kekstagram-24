@@ -6,7 +6,7 @@ const valueElement = document.querySelector('.effect-level__value');
 
 valueElement.value = 100;
 
-function createSlider(minValue, maxValue, startValue, effect, stepValue) {
+const createSlider = (minValue, maxValue, startValue, effect, stepValue) => {
   noUiSlider.create(sliderElement, {
     range: {
       min: minValue,
@@ -26,12 +26,12 @@ function createSlider(minValue, maxValue, startValue, effect, stepValue) {
       image.style.filter = `${effect}(${valueElement.value})`;
     }
   });
-}
+};
 
-function deleteSlider() {
+const deleteSlider = () => {
   if (sliderElement.noUiSlider) {
     sliderElement.noUiSlider.destroy();
   }
-}
+};
 
 export { sliderElement, createSlider, deleteSlider };

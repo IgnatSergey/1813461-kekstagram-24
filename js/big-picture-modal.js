@@ -45,4 +45,4 @@ const setMiniatureClick = (photosData) => {
   });
 };
 
-export { bigPictureModal, commentsLoaderElement, setMiniatureClick };
+export { commentsLoaderElement, setMiniatureClick };

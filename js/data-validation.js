@@ -7,12 +7,12 @@ const MAX_LENGTH_HASHTAG = 20;
 const MAX_HASHTAG_AMOUNT = 5;
 const outlineDefaultStyle = hashtagsInput.style.outline;
 
-function isElementRepeat(element, array) {
+const isElementRepeat = (element, array) => {
   if (array.length > 1 && array.indexOf(element, array.indexOf(element) + 1) > 0) {
     return true;
   }
   return false;
-}
+};
 
 const validateHashtags = () => {
   hashtagsInput.addEventListener('input', () => {

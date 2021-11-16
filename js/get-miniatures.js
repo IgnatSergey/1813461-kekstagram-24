@@ -1,5 +1,3 @@
-import { createRandomIdFromRangeGenerator } from './utils/get-random.js';
-
 const containerPhotoMiniature = document.querySelector('.pictures');
 const similarPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const filterBlock = document.querySelector('.img-filters');
@@ -12,13 +10,16 @@ const compareComments = (photoA, photoB) => {
   return commentsAmountB - commentsAmountA;
 };
 
-const renderSimilarPhotos = (similarPhotos, compareFunction) => {
+const compareRandom = () => Math.random() - 0.5;
+
+const renderSimilarPhotos = (similarPhotos, compareFunction, photosAmount) => {
   const listPhotoFragment = document.createDocumentFragment();
   const allPhotos = document.querySelectorAll('.picture');
 
   similarPhotos
     .slice()
     .sort(compareFunction)
+    .slice(0, photosAmount)
     .forEach(({ id, url, likes, comments }) => {
       const photoElement = similarPhotoTemplate.cloneNode(true);
       photoElement.querySelector('.picture__img').src = url;
@@ -29,27 +30,7 @@ const renderSimilarPhotos = (similarPhotos, compareFunction) => {
     });
   filterBlock.classList.remove('img-filters--inactive');
   if (allPhotos[0]) {
-    allPhotos.forEach((Photo) => { Photo.remove(); });
-  }
-  containerPhotoMiniature.appendChild(listPhotoFragment);
-};
-
-const renderRandomSimilarPhotos = (similarPhotos) => {
-  const listPhotoFragment = document.createDocumentFragment();
-  const allPhotos = document.querySelectorAll('.picture');
-  const generatePhotoId = createRandomIdFromRangeGenerator(0, similarPhotos.length - 1);
-
-  for (let i = 0; i < PHOTO_RANDOM_AMOUNT; i++) {
-    const currentPhoto = similarPhotos[generatePhotoId()];
-    const photoElement = similarPhotoTemplate.cloneNode(true);
-    photoElement.querySelector('.picture__img').src = currentPhoto.url;
-    photoElement.querySelector('.picture__likes').textContent = currentPhoto.likes;
-    photoElement.querySelector('.picture__comments').textContent = currentPhoto.comments.length;
-    photoElement.setAttribute('data-id', currentPhoto.id);
-    listPhotoFragment.appendChild(photoElement);
-  }
-  if (allPhotos[0]) {
-    allPhotos.forEach((Photo) => { Photo.remove(); });
+    allPhotos.forEach((photo) => { photo.remove(); });
   }
   containerPhotoMiniature.appendChild(listPhotoFragment);
 };
@@ -62,4 +43,4 @@ const setFilterClick = (filterElement, cb) => {
   });
 };
 
-export { containerPhotoMiniature, filterBlock, renderSimilarPhotos, setFilterClick, compareComments, renderRandomSimilarPhotos };
+export { containerPhotoMiniature, filterBlock, renderSimilarPhotos, setFilterClick, compareComments, compareRandom, PHOTO_RANDOM_AMOUNT};
