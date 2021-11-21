@@ -33,7 +33,7 @@ const onPopupKlickClose = () => {
   closeEditingModal();
 };
 
-function openEditingModal() {
+const openEditingModal = () => {
   editingModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   effectNoneInput.checked = true;
@@ -51,7 +51,7 @@ function openEditingModal() {
 
   document.addEventListener('keydown', onPopupEscKeydown);
   editingModalCloseElement.addEventListener('click', onPopupKlickClose);
-}
+};
 
 function closeEditingModal() {
   const photoClassName = image.className;
@@ -107,13 +107,13 @@ const onPopupSuccessKlickEmpty = (evt) => {
   }
 };
 
-function openSendDataSuccessMessage() {
+const openSendDataSuccessMessage = () => {
   closeEditingModal();
   successMessage.classList.remove('hidden');
   document.addEventListener('keydown', onPopupSuccessEscKeydown);
   successMessageCloseElement.addEventListener('click', onPopupSuccessKlickClose);
   document.addEventListener('click', onPopupSuccessKlickEmpty);
-}
+};
 
 function closeSendDataSuccessMessage() {
   successMessage.classList.add('hidden');
@@ -144,13 +144,13 @@ const onPopupErrorKlickEmpty = (evt) => {
   }
 };
 
-function openSendDataErrorMessage() {
+const openSendDataErrorMessage = () => {
   closeEditingModal();
   errorMessage.classList.remove('hidden');
   document.addEventListener('keydown', onPopupErrorEscKeydown);
   errorMessageCloseElement.addEventListener('click', onPopupErrorKlickClose);
   document.addEventListener('click', onPopupErrorKlickEmpty);
-}
+};
 
 function closeSendDataErrorMessage() {
   errorMessage.classList.add('hidden');

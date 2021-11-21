@@ -1,3 +1,3 @@
-function checkStringLength (string, length) {
-  return string.length <= length;
-}
+const isLongComment = (comment, maxLength) => comment.length > maxLength;
+
+export { isLongComment };

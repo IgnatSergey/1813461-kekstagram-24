@@ -17,13 +17,13 @@ const onPopupKlickClose = () => {
   closeBigPictureModal();
 };
 
-function openBigPictureModal() {
+const openBigPictureModal = () => {
   bigPictureModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   document.addEventListener('keydown', onPopupEscKeydown);
   bigPictureModalClose.addEventListener('click', onPopupKlickClose);
-}
+};
 
 function closeBigPictureModal() {
   bigPictureModal.classList.add('hidden');

@@ -35,12 +35,27 @@ const renderSimilarPhotos = (similarPhotos, compareFunction, photosAmount) => {
   containerPhotoMiniature.appendChild(listPhotoFragment);
 };
 
-const setFilterClick = (filterElement, cb) => {
-  filterElement.addEventListener('click', () => {
+const filterDefaultElement = filterBlock.querySelector('#filter-default');
+const filterRandomElement = filterBlock.querySelector('#filter-random');
+const filterPopularElement = filterBlock.querySelector('#filter-discussed');
+const form = filterBlock.querySelector('.img-filters__form');
+
+const renderSortedPhotos = (photos) => {
+  if (filterDefaultElement.classList.contains('img-filters__button--active')) {
+    renderSimilarPhotos(photos);
+  } else if (filterRandomElement.classList.contains('img-filters__button--active')) {
+    renderSimilarPhotos(photos, compareRandom, PHOTO_RANDOM_AMOUNT);
+  } else if (filterPopularElement.classList.contains('img-filters__button--active')) {
+    renderSimilarPhotos(photos, compareComments);
+  }
+};
+
+const setFilterClick = (cb) => {
+  form.addEventListener('click', (evt) => {
     filterBlock.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-    filterElement.classList.add('img-filters__button--active');
+    evt.target.classList.add('img-filters__button--active');
     cb();
   });
 };
 
-export { containerPhotoMiniature, filterBlock, renderSimilarPhotos, setFilterClick, compareComments, compareRandom, PHOTO_RANDOM_AMOUNT};
+export { containerPhotoMiniature, setFilterClick, renderSimilarPhotos, renderSortedPhotos };
